@@ -1,11 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BlahService } from './blah.service';
-
-export interface Blog {
-  title:string; 
-  language:string;
-  posts:string;
-}
+import { BlahService, Blog } from './blah.service';
 
 @Component({
   selector: 'app-root',
@@ -16,13 +10,22 @@ export class AppComponent implements OnInit {
   title = 'http-api-exercise';
 
 posts: Blog[] = [];
-  constructor(public postsApi: BlahService){}
-ngOnInit(){
-  this.postsApi.getBlog().subscribe((posts:any )=>{
-    this.posts = posts;
-    console.log(this.title);
+  constructor(public blogs: BlahService){}
 
+ngOnInit(): void {
+  this.blogs.getBlog().subscribe((data:Blog)=>{
+    console.log(data);
+    console.log(data.title);
+    console.log(data.language);
+    console.log(data.posts.length);
+    console.log(data.posts[0].title);
+    data.posts.forEach(post=>console.log(post.title));
+    for(let post of data.posts){
+      console.log(post.title);
+      for(let tag of post.tags){
+        console.log('--' + tag);
+      }
+    }
   })
 }
-
 }
